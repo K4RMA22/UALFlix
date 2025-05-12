@@ -10,11 +10,11 @@ os.makedirs(VIDEO_FOLDER, exist_ok=True)
 
 @app.route('/upload', methods=['POST'])
 def upload_video():
-    title = request.form['title']
-    description = request.form['description']
+    title = request.form.get('title','')
+    description = request.form.get('description','')
     file = request.files['file']
 
-    if file:
+    if file and file.filename:
         timestamp = str(int(time.time()))
         safe_filename = timestamp + "_" + file.filename
         filepath = os.path.join(VIDEO_FOLDER, safe_filename)
@@ -33,7 +33,9 @@ def upload_video():
         cur.close()
         conn.close()
 
-        return jsonify({"message": "Video uploaded successfully!"}), 200
+        return jsonify({"message": "Video uploaded successfully!",
+                        "filename": safe_filename,
+                        "url": url}), 200
     else:
         return jsonify({"error": "No file uploaded"}), 400
 

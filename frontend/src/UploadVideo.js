@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function UploadVideo() {
+function UploadVideo( {handleVideoUpload}) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
@@ -25,10 +25,16 @@ function UploadVideo() {
       });
 
       if (response.ok) {
+        const responseData = await response.json
         alert('Video uploaded successfully!');
         setTitle('');
         setDescription('');
         setFile(null);
+
+        if (file.name && handleVideoUpload) {
+          handleVideoUpload(file.name)
+        }
+
       } else {
         alert('Failed to upload video.');
       }
