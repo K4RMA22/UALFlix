@@ -19,7 +19,6 @@ services:
     build: ./catalog_service
     depends_on:
       - ualflix_db
-    command: ["./wait-for-it.sh", "ualflix_db", "5432", "--", "python", "app.py"]
     ports:
       - "8000:8000"
     networks:
@@ -31,8 +30,6 @@ services:
     build: ./streaming_service
     ports:
       - "8001:8001"
-    volumes:
-      - video_storage:/videos
     networks:
       - ualflix_network
 
